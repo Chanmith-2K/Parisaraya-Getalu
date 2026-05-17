@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>පරිසරය පුහුණු මධ්‍යස්ථානය</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { min-height: 100vh; background: linear-gradient(135deg, #dcfce7, #e0f2fe, #fff7ed); color: #123; }
+    .app { max-width: 1120px; margin: 0 auto; padding: 18px; }
+    header, .card { background: rgba(255,255,255,0.92); border-radius: 26px; padding: 24px; box-shadow: 0 14px 35px rgba(15, 23, 42, 0.09); border: 1px solid rgba(255,255,255,0.8); }
+    header { text-align: center; margin-bottom: 18px; }
+    .badge { display: inline-block; background: #dcfce7; color: #166534; padding: 8px 14px; border-radius: 999px; font-weight: 900; font-size: 14px; margin-bottom: 12px; }
+    h1 { font-size: clamp(28px, 5vw, 48px); color: #064e3b; line-height: 1.15; margin-bottom: 12px; }
+    .subtitle { max-width: 780px; margin: 0 auto; color: #475569; line-height: 1.75; font-size: 17px; }
+    .actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    button { border: 0; cursor: pointer; border-radius: 18px; padding: 14px 18px; font-size: 16px; font-weight: 900; transition: 0.16s ease; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.13); }
+    .primary { background: #16a34a; color: white; }
+    .secondary { background: #facc15; color: #3f2f00; }
+    .soft { background: #ecfeff; color: #155e75; border: 1px solid #a5f3fc; }
+    .danger { background: #fee2e2; color: #991b1b; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+    .grade-card { min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+    .grade-card h2 { font-size: 28px; color: #065f46; margin-bottom: 8px; }
+    .grade-card p { color: #64748b; line-height: 1.65; }
+    .section-title { color: #064e3b; font-size: 25px; margin-bottom: 14px; }
+    .hidden { display: none !important; }
+    .topic-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .topic-btn { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; min-height: 78px; }
+    .practice-layout { display: grid; grid-template-columns: 1.65fr 0.9fr; gap: 16px; }
+    .question-box { background: #f8fafc; border: 1px dashed #86efac; border-radius: 22px; padding: 22px; margin-bottom: 14px; }
+    .meta { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; color: #15803d; font-weight: 900; font-size: 14px; margin-bottom: 12px; }
+    .question { font-size: 24px; line-height: 1.65; font-weight: 900; color: #0f172a; }
+    .options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+    .option-btn { text-align: left; background: white; color: #0f172a; border: 2px solid #d9f99d; min-height: 62px; font-weight: 800; }
+    .option-btn.selected { border-color: #16a34a; background: #dcfce7; }
+    .feedback { border-radius: 18px; padding: 16px; line-height: 1.75; font-weight: 800; margin-bottom: 12px; }
+    .correct { background: #dcfce7; color: #166534; }
+    .wrong { background: #fee2e2; color: #991b1b; }
+    .explain { background: #fff7ed; border: 1px solid #fed7aa; color: #7c2d12; border-radius: 18px; padding: 16px; line-height: 1.8; font-weight: 750; margin-bottom: 12px; }
+    .score-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e2e8f0; font-weight: 800; }
+    .score-row:last-child { border-bottom: 0; }
+    .bar { height: 14px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 14px; }
+    .bar-fill { width: 0%; height: 100%; background: #22c55e; transition: width 0.25s ease; }
+    .mini-note { margin-top: 14px; color: #64748b; line-height: 1.65; font-size: 15px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0; }
+    .feature { background: rgba(255,255,255,0.9); border-radius: 22px; padding: 18px; text-align: center; border: 1px solid #d9f99d; }
+    .feature strong { display: block; color: #15803d; font-size: 24px; margin-bottom: 6px; }
+    footer { text-align: center; padding: 22px 0 8px; color: #64748b; font-weight: 800; }
+    @media (max-width: 860px) { .grid, .practice-layout, .feature-grid { grid-template-columns: 1fr; } .topic-list, .options { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .app { padding: 12px; } header, .card { padding: 18px; border-radius: 20px; } .topic-list, .options { grid-template-columns: 1fr; } button { width: 100%; } .question { font-size: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <span class="badge">3 • 4 • 5 වසර පරිසරය</span>
+      <h1>පරිසරය පුහුණු මධ්‍යස්ථානය</h1>
+      <p class="subtitle">3, 4, 5 වසර දරුවන්ට පරිසරය විෂය දිනපතා ප්‍රශ්න මගින් practice කිරීමට සකස් කළ learning quiz system එකකි. පිළිතුර වැරදුණත්, නිවැරදි හේතුව සහ මතක තබාගත යුතු කරුණ පෙන්වයි.</p>
+      <div class="actions">
+        <button class="primary" onclick="startDaily()">අද පරිසර ප්‍රශ්න 10</button>
+        <button class="secondary" onclick="document.getElementById('grades').scrollIntoView({behavior:'smooth'})">වසර තෝරන්න</button>
+      </div>
+    </header>
+
+    <section class="feature-grid">
+      <div class="feature"><strong>1000+</strong><span>Question Bank Ready Structure</span></div>
+      <div class="feature"><strong>3-5</strong><span>වසර අනුව ප්‍රශ්න</span></div>
+      <div class="feature"><strong>MCQ</strong><span>පහසු answer system</span></div>
+      <div class="feature"><strong>Tips</strong><span>වැරදුණාම explanation</span></div>
+    </section>
+
+    <section id="grades" class="grid">
+      <div class="card grade-card">
+        <div><h2>3 වසර</h2><p>මූලික පරිසර දැනුම, ශාක, සතුන්, ජලය, පිරිසිදුකම.</p></div>
+        <button class="primary" onclick="selectGrade(3)">3 වසර ආරම්භ කරන්න</button>
+      </div>
+      <div class="card grade-card">
+        <div><h2>4 වසර</h2><p>පරිසර සමතුලිතතාව, මිනිසා සහ පරිසරය, කාලගුණය, ආරක්ෂාව.</p></div>
+        <button class="primary" onclick="selectGrade(4)">4 වසර ආරම්භ කරන්න</button>
+      </div>
+      <div class="card grade-card">
+        <div><h2>5 වසර</h2><p>ශිෂ්‍යත්ව මට්ටමේ පරිසරය, හේතු-ප්‍රතිඵල, practical knowledge.</p></div>
+        <button class="primary" onclick="selectGrade(5)">5 වසර ආරම්භ කරන්න</button>
+      </div>
+    </section>
+
+    <section id="topics-section" class="card hidden">
+      <h2 class="section-title" id="topics-title">මාතෘකාවක් තෝරන්න</h2>
+      <div id="topic-list" class="topic-list"></div>
+    </section>
+
+    <section id="practice-section" class="card hidden">
+      <div class="practice-layout">
+        <main>
+          <h2 class="section-title" id="practice-title">Practice</h2>
+          <div class="question-box">
+            <div class="meta"><span id="question-count">ප්‍රශ්නය 1</span><span id="question-topic">මාතෘකාව</span></div>
+            <div class="question" id="question-text">ප්‍රශ්නය මෙතන පෙන්වයි.</div>
+          </div>
+          <div id="options" class="options"></div>
+          <div id="feedback" class="feedback hidden"></div>
+          <div id="explain" class="explain hidden"></div>
+          <div class="actions" style="justify-content:flex-start;">
+            <button class="secondary" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය</button>
+            <button class="soft" onclick="backToTopics()">මාතෘකා වෙත</button>
+            <button class="danger" onclick="resetSession()">නැවත ආරම්භ කරන්න</button>
+          </div>
+        </main>
+        <aside class="card">
+          <h2 class="section-title">ප්‍රතිඵලය</h2>
+          <div class="score-row"><span>උත්සාහ කළ</span><span id="attempted">0</span></div>
+          <div class="score-row"><span>නිවැරදි</span><span id="correct">0</span></div>
+          <div class="score-row"><span>වැරදි</span><span id="wrong">0</span></div>
+          <div class="score-row"><span>ලකුණු</span><span id="percent">0%</span></div>
+          <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
+          <p class="mini-note" id="daily-note">Preview version එක: දැන් sample question bank එකක් තියෙනවා. Full version එකට 1000ක් විතර ප්‍රශ්න add කරන්න පුළුවන්.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">දෙමව්පියන්ට / ගුරුවරයාට</h2>
+      <p class="mini-note">දරුවාගේ දැනුම මතකයෙන් පමණක් නොව, හේතුව සමඟ තේරුම් ගැනීමට මේ system එක භාවිතා කරන්න. වැරදුණු ප්‍රශ්න සතියකට වරක් නැවත කරවීමෙන් පරිසරය විෂයේ marks වැඩි කරගන්න පුළුවන්.</p>
+    </section>
+
+    <footer>පරිසරය පුහුණු මධ්‍යස්ථානය</footer>
+  </div>
+
+  <script>
+    const topics = {
+      3: ["ශාක", "සතුන්", "ජලය", "පිරිසිදුකම", "නිවස හා පාසල", "කෑම බීම", "කාලගුණය", "ආරක්ෂාව"],
+      4: ["ශාක හා සතුන්", "ජල චක්‍රය", "වාතය", "පස", "කාලගුණය", "සෞඛ්‍ය", "පරිසර ආරක්ෂාව", "මිනිසා සහ පරිසරය"],
+      5: ["ශිෂ්‍යත්ව පරිසරය", "හේතු හා ප්‍රතිඵල", "ස්වභාවික සම්පත්", "ජීවී හා අජීවී", "ආහාර දාම", "ආපදා ආරක්ෂාව", "ශ්‍රී ලංකාවේ පරිසරය", "මිශ්‍ර ප්‍රශ්න"]
+    };
+
+    const baseQuestions = [
+      {g:3,t:"ශාක",q:"ශාකයක ආහාර සාදන ප්‍රධාන කොටස කුමක්ද?",o:["කොළය","මූලය","මල","කඳ"],a:"කොළය",e:"බොහෝ ශාකවල කොළ තුළ ආහාර සෑදීම සිදු වේ.",tip:"කොළය ආහාර සෑදීමටත්, මූලය ජලය උරා ගැනීමටත් උපකාරී වේ."},
+      {g:3,t:"ශාක",q:"ශාකයක් පසට තදින් අල්ලා තබාගන්නේ කුමන කොටසද?",o:["මූලය","කොළය","මල","බීජය"],a:"මූලය",e:"මූලය ශාකය පසට බැඳ තබා ජලය හා පෝෂක උරා ගනී.",tip:"මූලය යටින් තිබුණත් ශාකයට ඉතා වැදගත්ය."},
+      {g:3,t:"සතුන්",q:"පියාපත් ඇති සතෙකු වන්නේ කවුද?",o:["කුරුල්ලා","බල්ලා","මාළුවා","ගවයා"],a:"කුරුල්ලා",e:"කුරුල්ලන්ට පියාපත් ඇති අතර බොහෝ කුරුල්ලන්ට පියාසර කළ හැකිය.",tip:"සතෙකුගේ ශරීර කොටස් අනුව එය හඳුනාගන්න."},
+      {g:3,t:"ජලය",q:"අපට ජලය අවශ්‍ය නොවන කාර්යය කුමක්ද?",o:["ගින්නට තෙල් දැමීම","බීම","නානවා","ඇඳුම් සෝදනවා"],a:"ගින්නට තෙල් දැමීම",e:"ජලය බීම, පිරිසිදුකම සහ පැළ වර්ධනයට වැදගත් වේ.",tip:"ජලය ජීවිතයට අත්‍යවශ්‍ය සම්පතකි."},
+      {g:3,t:"පිරිසිදුකම",q:"කෑමට පෙර කළ යුතු හොඳ පුරුද්ද කුමක්ද?",o:["අත් සෝදීම","දුවීම","නිදාගැනීම","කසළ දැමීම"],a:"අත් සෝදීම",e:"අත් සෝදා කෑම ගැනීමෙන් රෝග ඇති වීම අඩු කරගත හැකිය.",tip:"පිරිසිදුකම සෞඛ්‍යය ආරක්ෂා කරයි."},
+      {g:3,t:"නිවස හා පාසල",q:"පාසල පිරිසිදුව තබාගැනීමට කළ යුතු දෙය කුමක්ද?",o:["කසළ කූඩයට දැමීම","බිමට කඩදාසි දැමීම","බිත්ති ලිවීම","මල් කඩනවා"],a:"කසළ කූඩයට දැමීම",e:"කසළ නිසි තැනට දැමීමෙන් පාසල් පරිසරය පිරිසිදුව තබාගත හැකිය.",tip:"පොදු ස්ථාන රැක ගැනීම සියලු දෙනාගේ වගකීමකි."},
+      {g:3,t:"කෑම බීම",q:"ශරීරයට ශක්තිය ලබාදෙන ආහාරයක් වන්නේ කුමක්ද?",o:["බත්","ගල්","වැලි","ප්ලාස්ටික්"],a:"බත්",e:"බත් වැනි ආහාර ශරීරයට ශක්තිය ලබාදීමට උපකාරී වේ.",tip:"සෞඛ්‍ය සම්පන්න ආහාර තෝරාගැනීම වැදගත්ය."},
+      {g:3,t:"කාලගුණය",q:"වැසි දිනක භාවිතා කිරීමට සුදුසු දෙය කුමක්ද?",o:["කුඩය","පෑන","බෝලය","පනාව"],a:"කුඩය",e:"කුඩය වැසි ජලයෙන් අපව ආරක්ෂා කරයි.",tip:"කාලගුණයට අනුව අපේ ඇඳුම් සහ උපකරණ තෝරාගන්න."},
+      {g:3,t:"ආරක්ෂාව",q:"පාර මාරුවීමට සුදුසු ස්ථානය කුමක්ද?",o:["pedestrian crossing","වක්‍ර මාර්ගය","වාහන අතරින්","අඳුරු ස්ථානය"],a:"pedestrian crossing",e:"පදික මාරුව පාර මාරුවීමට ආරක්ෂිත ස්ථානයකි.",tip:"පාර මාරුවීමට පෙර දෙපස බලන්න."},
+
+      {g:4,t:"ශාක හා සතුන්",q:"ශාක හා සතුන් දෙදෙනාටම අවශ්‍ය පොදු දෙයක් කුමක්ද?",o:["ජලය","ප්ලාස්ටික්","දුම්","ලෝහ"],a:"ජලය",e:"ජීවීන්ට ජලය අත්‍යවශ්‍ය වේ.",tip:"ජීවීන්ගේ මූලික අවශ්‍යතා හඳුනාගන්න."},
+      {g:4,t:"ජල චක්‍රය",q:"ජලය වාෂ්ප වී ඉහළට යන ක්‍රියාව කුමක්ද?",o:["වාෂ්පීකරණය","ඝනීභවනය","වැසි වැටීම","ශබ්දය"],a:"වාෂ්පීකරණය",e:"උෂ්ණත්වය හේතුවෙන් ජලය වාෂ්ප බවට පත්ව ඉහළට යයි.",tip:"ජල චක්‍රයේ පියවර මතක තබාගන්න."},
+      {g:4,t:"වාතය",q:"අපට හුස්ම ගැනීමට අවශ්‍ය වායුව කුමක්ද?",o:["ඔක්සිජන්","දුම්","ධූලි","වාෂ්ප"],a:"ඔක්සිජන්",e:"මිනිසුන්ට සහ බොහෝ සතුන්ට හුස්ම ගැනීමට ඔක්සිජන් අවශ්‍ය වේ.",tip:"පිරිසිදු වාතය සෞඛ්‍යයට වැදගත්ය."},
+      {g:4,t:"පස",q:"ශාක වර්ධනයට හොඳම පසෙහි තිබිය යුතු දෙය කුමක්ද?",o:["පෝෂක ද්‍රව්‍ය","ප්ලාස්ටික්","කැඩුණු වීදුරු","තෙල්"],a:"පෝෂක ද්‍රව්‍ය",e:"පෝෂක ද්‍රව්‍ය ඇති පස ශාක වර්ධනයට උපකාරී වේ.",tip:"සාරවත් පස ගොවිතැනට වැදගත්ය."},
+      {g:4,t:"කාලගුණය",q:"වැසි මැනීමට භාවිතා කරන උපකරණය කුමක්ද?",o:["වැසි මාපකය","උෂ්ණත්වමානය","ඔරලෝසුව","මිනුම් පටිය"],a:"වැසි මාපකය",e:"වැසි මාපකයෙන් වැසි ප්‍රමාණය මැනේ.",tip:"මැනුම් උපකරණයේ කාර්යය මතක තබාගන්න."},
+      {g:4,t:"සෞඛ්‍ය",q:"මදුරුවන් බෝවීම අඩු කිරීමට කළ යුතු හොඳ ක්‍රියාව කුමක්ද?",o:["ජලය රැඳෙන ස්ථාන ඉවත් කිරීම","කසළ එකතු කිරීම","කවුළු වසා තැබීම පමණක්","මල් කඩනවා"],a:"ජලය රැඳෙන ස්ථාන ඉවත් කිරීම",e:"මදුරුවන් බෝවීමට රැඳී ඇති ජලය උපකාරී වේ.",tip:"රෝග වැළැක්වීමේදී පරිසර පිරිසිදුකම වැදගත්ය."},
+      {g:4,t:"පරිසර ආරක්ෂාව",q:"පරිසරයට හිතකර ක්‍රියාවක් වන්නේ කුමක්ද?",o:["ගස් සිටුවීම","කසළ ගිනි තැබීම","පොලිතින් දැමීම","ජලය අපවිත්‍ර කිරීම"],a:"ගස් සිටුවීම",e:"ගස් සිටුවීම පරිසරය, වාතය සහ ජීවීන්ට හිතකරය.",tip:"පරිසරය රැකීම දිනපතා කුඩා ක්‍රියාවලින් පටන් ගනී."},
+      {g:4,t:"මිනිසා සහ පරිසරය",q:"මිනිසා පරිසරයට හානි කරන ක්‍රියාවක් වන්නේ කුමක්ද?",o:["කැලෑ කැපීම","ගස් සිටුවීම","කසළ වෙන් කිරීම","ජලය ඉතිරි කිරීම"],a:"කැලෑ කැපීම",e:"කැලෑ කැපීමෙන් සතුන්ගේ වාසස්ථාන අහිමි විය හැකිය.",tip:"මිනිස් ක්‍රියා පරිසරයට බලපායි."},
+
+      {g:5,t:"ශිෂ්‍යත්ව පරිසරය",q:"ආහාර දාමයක ආරම්භයේ බොහෝවිට සිටින්නේ කවුරුන්ද?",o:["ශාක","මාංශ භක්ෂක සතුන්","මිනිසා","කෘමීන් පමණක්"],a:"ශාක",e:"ශාක සූර්යාලෝකය භාවිතා කර ආහාර සාදන නිසා ආහාර දාමයේ ආරම්භක නිෂ්පාදකයන් වේ.",tip:"නිෂ්පාදකයා, පාරිභෝගිකයා, විඝටකයා යන අදහස් මතක තබාගන්න."},
+      {g:5,t:"හේතු හා ප්‍රතිඵල",q:"කැලෑ විනාශ වීමෙන් ඇතිවිය හැකි ප්‍රතිඵලයක් කුමක්ද?",o:["සතුන්ගේ වාසස්ථාන අහිමි වීම","වැඩි ගස් ඇති වීම","වාතය පිරිසිදු වීම","ජලය ඉතිරි වීම"],a:"සතුන්ගේ වාසස්ථාන අහිමි වීම",e:"කැලෑ සතුන්ට වාසස්ථාන හා ආහාර සපයයි. කැලෑ නැති වීමෙන් ඒවා අහිමි වේ.",tip:"පරිසර ගැටලු වලදී හේතුව සහ ප්‍රතිඵලය වෙන් කර බලන්න."},
+      {g:5,t:"ස්වභාවික සම්පත්",q:"ස්වභාවික සම්පතක් වන්නේ කුමක්ද?",o:["ජලය","ප්ලාස්ටික් බෝතලය","කෘතිම රෙදි","සිමෙන්ති"],a:"ජලය",e:"ජලය ස්වභාවයෙන් ලැබෙන සම්පතකි.",tip:"ස්වභාවයෙන් ලැබෙන දේ ස්වභාවික සම්පත් ලෙස හඳුන්වයි."},
+      {g:5,t:"ජීවී හා අජීවී",q:"ජීවී දෙයක් වන්නේ කුමක්ද?",o:["ගස","ගල්","මේසය","කෝප්පය"],a:"ගස",e:"ගස වර්ධනය වන, ආහාර සාදන ජීවී දෙයකි.",tip:"වර්ධනය, ආහාර, ප්‍රජනනය වැනි ලක්ෂණ ජීවීන්ට ඇත."},
+      {g:5,t:"ආහාර දාම",q:"තණකොළ → පළඟැටියා → ගෙම්බා. මෙහි පළමු නිෂ්පාදකයා කවුද?",o:["තණකොළ","පළඟැටියා","ගෙම්බා","සර්පයා"],a:"තණකොළ",e:"තණකොළ ශාකයක් වන නිසා එය ආහාර සාදන නිෂ්පාදකයා වේ.",tip:"ආහාර දාමයක ඊතලය බලශක්තිය යන දිශාව පෙන්වයි."},
+      {g:5,t:"ආපදා ආරක්ෂාව",q:"ගංවතුර අවස්ථාවක කළ යුතු ආරක්ෂිත ක්‍රියාව කුමක්ද?",o:["උස් ස්ථානයකට යාම","ගැඹුරු ජලයට යාම","විදුලි උපකරණ අල්ලීම","පාලම යට නතර වීම"],a:"උස් ස්ථානයකට යාම",e:"ගංවතුරේදී ජලයෙන් ඈත්ව උස් ආරක්ෂිත ස්ථානයකට යාම සුදුසුය.",tip:"ආපදා වලදී ආරක්ෂිත ස්ථානය සහ වැඩිහිටි උපදෙස් වැදගත්ය."},
+      {g:5,t:"ශ්‍රී ලංකාවේ පරිසරය",q:"ශ්‍රී ලංකාවේ තෙත් කලාපයේ බහුලව ලැබෙන්නේ කුමක්ද?",o:["වැසි","හිම","වැලි කුණාටු","ගිනි කඳු"],a:"වැසි",e:"තෙත් කලාපයේ වර්ෂාපතනය වැඩිය.",tip:"කලාප හඳුනාගැනීමේදී වැසි, උෂ්ණත්වය, ශාක ආවරණය බලන්න."},
+      {g:5,t:"මිශ්‍ර ප්‍රශ්න",q:"කසළ වෙන් කිරීමේ ප්‍රධාන වාසිය කුමක්ද?",o:["ප්‍රතිචක්‍රීකරණය පහසු වීම","කසළ වැඩි වීම","දුම් වැඩි වීම","ජලය අපවිත්‍ර වීම"],a:"ප්‍රතිචක්‍රීකරණය පහසු වීම",e:"කසළ වෙන් කළ විට නැවත භාවිතා කළ හැකි ද්‍රව්‍ය පහසුවෙන් හඳුනාගත හැකිය.",tip:"Reduce, Reuse, Recycle යන අදහස මතක තබාගන්න."}
+    ];
+
+    const generatedQuestions = generateLargeBank(baseQuestions, 1000);
+    let activeQuestions = [];
+    let selectedAnswer = null;
+    let currentIndex = 0;
+    let attempted = 0;
+    let correct = 0;
+    let currentGrade = null;
+
+    function generateLargeBank(base, targetCount) {
+      const intros = ["හොඳින් සිතා පිළිතුර තෝරන්න:", "නිවැරදි පිළිතුර කුමක්ද?", "මෙම ප්‍රශ්නයට වඩාත් සුදුසු පිළිතුර තෝරන්න:", "පරිසරය දැනුම භාවිතා කර පිළිතුරු දෙන්න:"];
+      const bank = [];
+      for (let i = 0; i < targetCount; i++) {
+        const item = base[i % base.length];
+        const intro = intros[i % intros.length];
+        bank.push({ ...item, id: i + 1, q: `${intro} ${item.q}` });
+      }
+      return bank;
+    }
+
+    function selectGrade(grade) {
+      currentGrade = grade;
+      const section = document.getElementById("topics-section");
+      const list = document.getElementById("topic-list");
+      document.getElementById("topics-title").textContent = `${grade} වසර - මාතෘකාවක් තෝරන්න`;
+      list.innerHTML = "";
+      topics[grade].forEach(topic => {
+        const btn = document.createElement("button");
+        btn.className = "topic-btn";
+        btn.textContent = topic;
+        btn.onclick = () => startPractice(grade, topic);
+        list.appendChild(btn);
+      });
+      section.classList.remove("hidden");
+      document.getElementById("practice-section").classList.add("hidden");
+      section.scrollIntoView({behavior:"smooth"});
+    }
+
+    function startPractice(grade, topic) {
+      activeQuestions = shuffle(generatedQuestions.filter(x => x.g === grade && x.t === topic));
+      if (activeQuestions.length === 0) activeQuestions = shuffle(generatedQuestions.filter(x => x.g === grade));
+      currentIndex = 0; attempted = 0; correct = 0; selectedAnswer = null;
+      document.getElementById("practice-title").textContent = `${grade} වසර - ${topic}`;
+      document.getElementById("practice-section").classList.remove("hidden");
+      showQuestion(); updateScore();
+      document.getElementById("practice-section").scrollIntoView({behavior:"smooth"});
+    }
+
+    function startDaily() {
+      activeQuestions = shuffle([...generatedQuestions]).slice(0, 10);
+      currentIndex = 0; attempted = 0; correct = 0; selectedAnswer = null; currentGrade = "daily";
+      document.getElementById("practice-title").textContent = "අද පරිසර ප්‍රශ්න 10";
+      document.getElementById("practice-section").classList.remove("hidden");
+      document.getElementById("topics-section").classList.add("hidden");
+      showQuestion(); updateScore();
+      document.getElementById("practice-section").scrollIntoView({behavior:"smooth"});
+    }
+
+    function showQuestion() {
+      const item = activeQuestions[currentIndex];
+      if (!item) return;
+      selectedAnswer = null;
+      document.getElementById("question-count").textContent = `ප්‍රශ්නය ${currentIndex + 1} / ${activeQuestions.length}`;
+      document.getElementById("question-topic").textContent = `${item.g} වසර • ${item.t}`;
+      document.getElementById("question-text").textContent = item.q;
+      document.getElementById("feedback").className = "feedback hidden";
+      document.getElementById("feedback").innerHTML = "";
+      document.getElementById("explain").className = "explain hidden";
+      document.getElementById("explain").innerHTML = "";
+      const optionsBox = document.getElementById("options");
+      optionsBox.innerHTML = "";
+      shuffle([...item.o]).forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = opt;
+        btn.onclick = () => chooseAnswer(btn, opt, item);
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function chooseAnswer(button, opt, item) {
+      if (selectedAnswer !== null) return;
+      selectedAnswer = opt;
+      attempted++;
+      document.querySelectorAll(".option-btn").forEach(b => b.classList.remove("selected"));
+      button.classList.add("selected");
+      const feedback = document.getElementById("feedback");
+      const explain = document.getElementById("explain");
+      if (opt === item.a) {
+        correct++;
+        feedback.className = "feedback correct";
+        feedback.textContent = "හරි! ඔබ නිවැරදි පිළිතුර තෝරා ඇත.";
+      } else {
+        feedback.className = "feedback wrong";
+        feedback.innerHTML = `වැරදියි. නිවැරදි පිළිතුර: <strong>${item.a}</strong>`;
+      }
+      explain.className = "explain";
+      explain.innerHTML = `<strong>හේතුව:</strong> ${item.e}<br><strong>මතක තබාගන්න:</strong> ${item.tip}`;
+      updateScore();
+    }
+
+    function nextQuestion() {
+      if (activeQuestions.length === 0) return;
+      currentIndex++;
+      if (currentIndex >= activeQuestions.length) currentIndex = 0;
+      showQuestion();
+    }
+
+    function resetSession() {
+      currentIndex = 0; attempted = 0; correct = 0; selectedAnswer = null;
+      activeQuestions = shuffle(activeQuestions);
+      showQuestion(); updateScore();
+    }
+
+    function backToTopics() {
+      document.getElementById("practice-section").classList.add("hidden");
+      if (currentGrade === "daily") {
+        document.getElementById("grades").scrollIntoView({behavior:"smooth"});
+      } else {
+        document.getElementById("topics-section").classList.remove("hidden");
+        document.getElementById("topics-section").scrollIntoView({behavior:"smooth"});
+      }
+    }
+
+    function updateScore() {
+      const wrong = attempted - correct;
+      const percent = attempted === 0 ? 0 : Math.round((correct / attempted) * 100);
+      document.getElementById("attempted").textContent = attempted;
+      document.getElementById("correct").textContent = correct;
+      document.getElementById("wrong").textContent = wrong;
+      document.getElementById("percent").textContent = `${percent}%`;
+      document.getElementById("bar-fill").style.width = `${percent}%`;
+    }
+
+    function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+  </script>
+</body>
+</html>
