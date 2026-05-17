@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>පරිසරය පුහුණු මධ්‍යස්ථානය</title>
+  <title>Prasad Sirගේ පරිසරය පුහුණු මධ්‍යස්ථානය</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     body { min-height: 100vh; background: linear-gradient(135deg, #dcfce7, #e0f2fe, #fff7ed); color: #123; }
@@ -55,32 +55,29 @@
 <body>
   <div class="app">
     <header>
-      <span class="badge">3 • 4 • 5 වසර පරිසරය</span>
-      <h1>පරිසරය පුහුණු මධ්‍යස්ථානය</h1>
-      <p class="subtitle">3, 4, 5 වසර දරුවන්ට පරිසරය විෂය දිනපතා ප්‍රශ්න මගින් practice කිරීමට සකස් කළ learning quiz system එකකි. පිළිතුර වැරදුණත්, නිවැරදි හේතුව සහ මතක තබාගත යුතු කරුණ පෙන්වයි.</p>
+      <span class="badge">Prasad Sirගේ 3 • 4 • 5 වසර පරිසරය Class</span>
+      <h1>Prasad Sirගේ පරිසරය පුහුණු මධ්‍යස්ථානය</h1>
+      <p class="subtitle">Prasad Sirගේ 3, 4, 5 වසර පරිසරය පන්තියේ දරුවන්ට දිනපතා ප්‍රශ්න මගින් practice කිරීමට සකස් කළ learning quiz system එකකි. පිළිතුර වැරදුණත්, නිවැරදි හේතුව සහ මතක තබාගත යුතු කරුණ පෙන්වයි.</p>
       <div class="actions">
         <button class="primary" onclick="startDaily()">අද පරිසර ප්‍රශ්න 10</button>
         <button class="secondary" onclick="document.getElementById('grades').scrollIntoView({behavior:'smooth'})">වසර තෝරන්න</button>
       </div>
     </header>
-
     <section class="feature-grid">
-      <div class="feature"><strong>1000+</strong><span>Question Bank Ready Structure</span></div>
+      <div class="feature"><strong>1000+</strong><span>Prasad Sir Class Practice Bank</span></div>
       <div class="feature"><strong>3-5</strong><span>වසර අනුව ප්‍රශ්න</span></div>
       <div class="feature"><strong>MCQ</strong><span>පහසු answer system</span></div>
       <div class="feature"><strong>Tips</strong><span>වැරදුණාම explanation</span></div>
     </section>
-
     <section id="grades" class="grid">
       <div class="card grade-card"><div><h2>3 වසර</h2><p>මූලික පරිසර දැනුම, ශාක, සතුන්, ජලය, පිරිසිදුකම.</p></div><button class="primary" onclick="selectGrade(3)">3 වසර ආරම්භ කරන්න</button></div>
       <div class="card grade-card"><div><h2>4 වසර</h2><p>පරිසර සමතුලිතතාව, මිනිසා සහ පරිසරය, කාලගුණය, ආරක්ෂාව.</p></div><button class="primary" onclick="selectGrade(4)">4 වසර ආරම්භ කරන්න</button></div>
       <div class="card grade-card"><div><h2>5 වසර</h2><p>ශිෂ්‍යත්ව මට්ටමේ පරිසරය, හේතු-ප්‍රතිඵල, practical knowledge.</p></div><button class="primary" onclick="selectGrade(5)">5 වසර ආරම්භ කරන්න</button></div>
     </section>
-
     <section id="topics-section" class="card hidden"><h2 class="section-title" id="topics-title">මාතෘකාවක් තෝරන්න</h2><div id="topic-list" class="topic-list"></div></section>
     <section id="practice-section" class="card hidden"><div class="practice-layout"><main><h2 class="section-title" id="practice-title">Practice</h2><div class="question-box"><div class="meta"><span id="question-count">ප්‍රශ්නය 1</span><span id="question-topic">මාතෘකාව</span></div><div class="question" id="question-text">ප්‍රශ්නය මෙතන පෙන්වයි.</div></div><div id="options" class="options"></div><div id="feedback" class="feedback hidden"></div><div id="explain" class="explain hidden"></div><div class="actions" style="justify-content:flex-start;"><button class="secondary" onclick="nextQuestion()">ඊළඟ ප්‍රශ්නය</button><button class="soft" onclick="backToTopics()">මාතෘකා වෙත</button><button class="danger" onclick="resetSession()">නැවත ආරම්භ කරන්න</button></div></main><aside class="card"><h2 class="section-title">ප්‍රතිඵලය</h2><div class="score-row"><span>උත්සාහ කළ</span><span id="attempted">0</span></div><div class="score-row"><span>නිවැරදි</span><span id="correct">0</span></div><div class="score-row"><span>වැරදි</span><span id="wrong">0</span></div><div class="score-row"><span>ලකුණු</span><span id="percent">0%</span></div><div class="bar"><div class="bar-fill" id="bar-fill"></div></div><p class="mini-note" id="daily-note">Preview version එක: දැන් sample question bank එකක් තියෙනවා. Full version එකට 1000ක් විතර ප්‍රශ්න add කරන්න පුළුවන්.</p></aside></div></section>
-    <section class="card"><h2 class="section-title">දෙමව්පියන්ට / ගුරුවරයාට</h2><p class="mini-note">දරුවාගේ දැනුම මතකයෙන් පමණක් නොව, හේතුව සමඟ තේරුම් ගැනීමට මේ system එක භාවිතා කරන්න. වැරදුණු ප්‍රශ්න සතියකට වරක් නැවත කරවීමෙන් පරිසරය විෂයේ marks වැඩි කරගන්න පුළුවන්.</p></section>
-    <footer>පරිසරය පුහුණු මධ්‍යස්ථානය</footer>
+    <section class="card"><h2 class="section-title">දෙමව්පියන්ට / Prasad Sirගේ පන්තියේ දරුවන්ට</h2><p class="mini-note">මෙම system එක Prasad Sirගේ පරිසරය පන්තියට සහාය වන digital practice tool එකක් ලෙස භාවිතා කළ හැකිය. දරුවාගේ දැනුම මතකයෙන් පමණක් නොව, හේතුව සමඟ තේරුම් ගැනීමට මෙය උපකාරී වේ. වැරදුණු ප්‍රශ්න සතියකට වරක් නැවත කරවීමෙන් පරිසරය විෂයේ marks වැඩි කරගන්න පුළුවන්.</p></section>
+    <footer>Prasad Sirගේ පරිසරය පුහුණු මධ්‍යස්ථානය</footer>
   </div>
   <script>
     const topics = {3:["ශාක","සතුන්","ජලය","පිරිසිදුකම","නිවස හා පාසල","කෑම බීම","කාලගුණය","ආරක්ෂාව"],4:["ශාක හා සතුන්","ජල චක්‍රය","වාතය","පස","කාලගුණය","සෞඛ්‍ය","පරිසර ආරක්ෂාව","මිනිසා සහ පරිසරය"],5:["ශිෂ්‍යත්ව පරිසරය","හේතු හා ප්‍රතිඵල","ස්වභාවික සම්පත්","ජීවී හා අජීවී","ආහාර දාම","ආපදා ආරක්ෂාව","ශ්‍රී ලංකාවේ පරිසරය","මිශ්‍ර ප්‍රශ්න"]};
